@@ -1,0 +1,102 @@
+{{- $registry := .Values.registry | default "devsracr.azurecr.io" }}
+  {{- $appName := .Values.appName | default "sr-extractors" }}
+  {{- $requestGpu := .Values.requestGpu | default "1" }}
+  {{- $nodeAffintyLabel := .Values.nodeAffinityLabel | default "default" }}
+  {{- $namespace := .Values.namespace }}
+  {{- $storageName := .Values.storage.name }}
+  {{- $env := .Values.env | default "dev" }}
+  {{- range .Values.deployment_rest }}
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "{{ .name }}-{{ $env }}"
+  namespace: {{ $namespace }}
+  labels:
+    app: "{{ $appName }}-{{ $env }}"
+spec:
+  replicas: {{ .container.replicaCount }}
+  selector:
+    matchLabels:
+      app: "{{ $appName }}-{{ $env }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ $appName }}-{{ $env }}"
+        deploymentconfig: "{{ .name }}-{{ $env }}"
+    spec:
+      volumes:
+        - name: "{{ $storageName }}-pv-{{ $env }}"
+          persistentVolumeClaim:
+            claimName: "{{ $storageName }}-pvc-{{ $env }}"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - "{{ $nodeAffintyLabel }}"
+      containers:
+        - args: ["-c", "cd {{.container.workingDir}}; exec /bin/bash run.sh "]
+          command:
+            - /bin/bash
+          name: "{{ .name }}-{{ $env }}"
+          image: "{{ $registry }}/{{ .container.imageName }}:{{ .container.versionTag }}"
+          resources:
+            limits:
+              nvidia.com/gpu: {{ .container.requestGpu}}  # requesting 1 GPU
+          volumeMounts:
+            - name: "{{ $storageName }}-pv-{{ $env }}"
+              mountPath: /data
+          env:
+            - name: RABBIT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $namespace }}-{{ $env }}-common-cm"
+                  key: RABBIT_HOST
+            - name: RABBIT_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $namespace }}-{{ $env }}-common-cm"
+                  key: RABBIT_PORT
+            - name: RABBIT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: "rabbit-{{ $env }}-secret"
+                  key: username
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "rabbit-{{ $env }}-secret"
+                  key: password
+            - name: RPC_EXCHANGE
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $namespace }}-{{ $env }}-common-cm"
+                  key: RPC_EXCHANGE
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $namespace }}-{{ $env }}-common-cm"
+                  key: TZ
+            {{- range .container.environments }}   
+            - name: {{ .env }}
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+                  key: {{.value}}
+            {{ - end }}      
+                        
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+---
+{{- end }}

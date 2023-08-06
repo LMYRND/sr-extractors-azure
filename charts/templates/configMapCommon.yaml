@@ -1,0 +1,15 @@
+{{- $namespace := .Values.namespace -}}
+{{- $env := .Values.env -}}
+{{- with .Values.config }}
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "{{ $namespace }}-{{ $env }}-common-cm"
+  namespace: {{ $namespace }}
+data:
+  RABBIT_PORT: "{{ .rabbit.port }}"
+  RABBIT_HOST: "{{ .rabbit.host }}"
+  RPC_EXCHANGE: "{{ .rabbit.rpc_exchange }}"
+  TZ: "{{ .tz }}"
+
+{{- end }}

@@ -1,0 +1,69 @@
+appName: sr-extractors
+autoscaling:
+  enabled: false
+  maxReplicas: 100
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+nodeAffinityLabel: gpunp
+
+config:
+  rabbit:
+    host: 192.168.115.5
+    password: bla
+    port: '5672'
+    rpc_exchange: LMY
+    username: bla
+    
+  tz: Asia/Jerusalem
+deployment_rest:
+  - container:
+      versionTag: facadeopening
+      imageName: yolov8
+      argument: extractWindowV3
+      replicaCount: 1
+      requestGpu: 1
+      workingDir: /workspace/openingsfacades
+      environments:
+        - env: FROM_PREFIX_PATH
+          value: /data
+          name: sr-extract-window-v3
+        - env: QUEUE_NAME
+          value: extractWindowV3  
+          name: sr-extract-window-v3    
+        - env: PYTHON_PATH
+          value: /workspace/openingsfacades
+          name: sr-extract-window-v3
+        - env: ROOT_ASSETS_DIR
+          value: /assets
+          name: sr-extract-window-v3
+        - env: TO_PREFIX_PATH
+          value: /data
+          name: sr-extract-window-v3
+        - env: NVIDIA_VISIBLE_DEVICES
+          value: all
+          name: sr-extract-window-v3
+        - env: config
+          value: /workspace/openingsfacades/ms_config.yml
+          name: sr-extract-window-v3
+        - env: DETECTOR_DEVICE
+          value: cuda
+          name: sr-extract-window-v3
+    name: sr-extract-window-v3
+  
+ 
+env: azure
+logo: javascript
+namespace: sr-executor-azure
+pullPolicy: IfNotPresent
+registry: devsracr.azurecr.io
+registryPullSecret: acr-secret
+storage:
+  accessModes: ReadWriteMany
+  name: sr-extractor-data
+  secretName: secret-sasrnfsdev-1
+  azurestorageaccountkey: bW9jaw==
+  azurestorageaccountname: bW9jaw==
+  shareName: data
+  storageCapacity: 100Gi
+  storageClassName: azure-file-sc
+  storageRequest: 50Gi

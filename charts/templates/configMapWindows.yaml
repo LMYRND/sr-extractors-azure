@@ -1,0 +1,14 @@
+{{- $namespace := .Values.namespace -}}
+{{- $env := .Values.env -}}
+{{- with .Values.config }}
+{{- range .Values.deployment_rest }}
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+  namespace: {{ $namespace }}
+data:
+  {{- range .container.environments }}
+    {{ .env }}: {{.value}}
+  {{ - end }}
+{{- end }}
