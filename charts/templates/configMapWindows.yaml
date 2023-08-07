@@ -10,5 +10,5 @@ metadata:
 data:
 {{- range .container.environments }}
     {{ .env }}: {{.value}}
-{{ - end }}
+{{- end }}
 {{- end }}
