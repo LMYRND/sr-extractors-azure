@@ -48,9 +48,7 @@ spec:
           value: "gpu"
           effect: NoSchedule
       containers:
-        - args: ["-c", "cd {{.container.workingDir}}; exec /bin/bash run.sh "]
-          command:
-            - service
+        - args: ["-c", "cd {{.container.workingDir}}; exec /bin/bash run.sh service"]
           name: "{{ .name }}-{{ $env }}"
           image: "{{ $registry }}/{{ .container.imageName }}:{{ .container.versionTag }}"
           resources:
