@@ -16,7 +16,6 @@ config:
     
   tz: Asia/Jerusalem
 deployment_rest:
-
   - container:
       versionTag: facadeopening
       imageName: yolov8
