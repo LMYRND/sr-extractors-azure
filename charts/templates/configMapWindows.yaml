@@ -7,5 +7,6 @@ metadata:
   name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
   namespace: {{ $namespace }}
 data:
-  {{ .environments }}
+  {{- range $k, $v := .environments }}
+  {{ $k }}: {{ $v }}
 {{- end }}
