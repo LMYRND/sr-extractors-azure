@@ -5,7 +5,7 @@
   {{- $namespace := .Values.namespace }}
   {{- $storageName := .Values.storage.name }}
   {{- $env := .Values.env | default "dev" }}
-  {{- range .Values.deployment_rest }}
+  {{- with .Values.windows_deployment }}
 
 kind: Deployment
 apiVersion: apps/v1

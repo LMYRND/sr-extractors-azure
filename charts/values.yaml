@@ -15,15 +15,15 @@ config:
     username: bla
     
   tz: Asia/Jerusalem
-deployment_rest:
-  - container:
+windows_deployment:
+  container:
       versionTag: facadeopening
       imageName: yolov8
       argument: extractWindowV3
       replicaCount: 1
       requestGpu: 1
       workingDir: /workspace/openingsfacades
-      environments:
+  environments:
         - env: FROM_PREFIX_PATH
           value: /data
           name: sr-extract-window-v3
@@ -48,7 +48,7 @@ deployment_rest:
         - env: DETECTOR_DEVICE
           value: cuda
           name: sr-extract-window-v3
-    name: sr-extract-window-v3
+  name: sr-extract-window-v3
  
 env: azure
 logo: javascript
