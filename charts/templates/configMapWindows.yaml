@@ -1,5 +1,5 @@
 {{- $namespace := .Values.namespace -}}
-  {{- $env := .Values.env -}}
+{{- $env := .Values.env -}}
   {{- range .Values.deployment_rest }}
 apiVersion: "v1"
 kind: "ConfigMap"
