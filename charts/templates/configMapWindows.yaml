@@ -4,7 +4,7 @@
 apiVersion: "v1"
 kind: "ConfigMap"
 metadata:
-  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
+  name: "{{ $namespace }}-{{ $env }}-extractor-cm"
   namespace: {{ $namespace }}
 data:
   {{- range .container.environments }}
