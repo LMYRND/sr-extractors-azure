@@ -9,4 +9,5 @@ metadata:
 data:
   {{- range $k, $v := .environments }}
   {{ $k }}: {{ $v }}
+  {{- end }}
 {{- end }}
