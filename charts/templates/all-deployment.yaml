@@ -49,6 +49,7 @@ spec:
           resources:
             limits:
               nvidia.com/gpu: {{ .container.requestGpu}}  # requesting 1 GPU
+          
           tolerations:
             - key: "sku"
               operator: "Equal"
