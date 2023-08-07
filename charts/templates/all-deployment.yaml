@@ -40,6 +40,12 @@ spec:
                 operator: In
                 values:
                 - "{{ $nodeAffintyLabel }}"
+      restartPolicy: OnFailure
+      tolerations:
+        - key: "sku"
+          operator: "Equal"
+          value: "gpu"
+          effect: NoSchedule
       containers:
         - args: ["-c", "cd {{.container.workingDir}}; exec /bin/bash run.sh "]
           command:
@@ -49,12 +55,6 @@ spec:
           resources:
             limits:
               nvidia.com/gpu: {{ .container.requestGpu}}  # requesting 1 GPU
-          
-          tolerations:
-            - key: "sku"
-              operator: "Equal"
-              value: "gpu"
-              effect: NoSchedule
           volumeMounts:
             - name: "{{ $storageName }}-pv-{{ $env }}"
               mountPath: /data
