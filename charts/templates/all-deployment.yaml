@@ -85,7 +85,7 @@ spec:
             - name: {{ .env }}
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ $namespace }}-{{ $env }}-extractor-cm"
+                  name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
                   key: {{ .value }}
             {{- end }}      
                         
