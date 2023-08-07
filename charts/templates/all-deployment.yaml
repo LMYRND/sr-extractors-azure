@@ -49,6 +49,11 @@ spec:
           resources:
             limits:
               nvidia.com/gpu: {{ .container.requestGpu}}  # requesting 1 GPU
+          tolerations:
+            - key: "sku"
+              operator: "Equal"
+              value: "gpu"
+              effect: NoSchedule
           volumeMounts:
             - name: "{{ $storageName }}-pv-{{ $env }}"
               mountPath: /data
