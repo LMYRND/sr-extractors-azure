@@ -81,12 +81,12 @@ spec:
                 configMapKeyRef:
                   name: "{{ $namespace }}-{{ $env }}-common-cm"
                   key: TZ
-            {{- range .container.environments }}   
-            - name: {{ .env }}
+            {{- range $k, $v := .environments }}
+            - name: {{ $k }}
               valueFrom:
                 configMapKeyRef:
                   name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
-                  key: {{ .value }}
+                  key: {{  $k }}
             {{- end }}      
                         
       restartPolicy: Always
