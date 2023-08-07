@@ -7,8 +7,6 @@
   {{- $env := .Values.env | default "dev" }}
   {{- $name := .Values.windows_deployment.name}}
   {{- with .Values.windows_deployment }}
-  
-
 
 kind: Deployment
 apiVersion: apps/v1
