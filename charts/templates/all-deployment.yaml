@@ -86,8 +86,8 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: "{{ $namespace }}-{{ $env }}-{{ .name }}-cm"
-                  key: {{.value}}
-            {{ - end }}      
+                  key: {{ .value }}
+            {{- end }}      
                         
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
