@@ -24,30 +24,14 @@ windows_deployment:
       requestGpu: 1
       workingDir: /workspace/openingsfacades
   environments:
-        - env: FROM_PREFIX_PATH
-          value: /data
-          name: sr-extract-window-v3
-        - env: QUEUE_NAME
-          value: extractWindowV3  
-          name: sr-extract-window-v3    
-        - env: PYTHON_PATH
-          value: /workspace/openingsfacades
-          name: sr-extract-window-v3
-        - env: ROOT_ASSETS_DIR
-          value: /assets
-          name: sr-extract-window-v3
-        - env: TO_PREFIX_PATH
-          value: /data
-          name: sr-extract-window-v3
-        - env: NVIDIA_VISIBLE_DEVICES
-          value: all
-          name: sr-extract-window-v3
-        - env: config
-          value: /workspace/openingsfacades/ms_config.yml
-          name: sr-extract-window-v3
-        - env: DETECTOR_DEVICE
-          value: cuda
-          name: sr-extract-window-v3
+    FROM_PREFIX_PATH: /data
+    QUEUE_NAME: extractWindowV3
+    PYTHON_PATH: /workspace/openingsfacades
+    ROOT_ASSETS_DIR: /assets
+    TO_PREFIX_PATH: /data
+    NVIDIA_VISIBLE_DEVICES: all
+    config: /workspace/openingsfacades/ms_config.yml
+    DETECTOR_DEVICE: cuda
   name: sr-extract-window-v3
  
 env: azure
