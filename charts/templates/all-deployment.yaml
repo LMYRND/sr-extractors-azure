@@ -50,7 +50,7 @@ spec:
       containers:
         - args: ["-c", "cd {{.container.workingDir}}; exec /bin/bash run.sh "]
           command:
-            - /bin/bash
+            - service
           name: "{{ .name }}-{{ $env }}"
           image: "{{ $registry }}/{{ .container.imageName }}:{{ .container.versionTag }}"
           resources:
