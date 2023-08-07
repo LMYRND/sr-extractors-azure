@@ -16,6 +16,7 @@ config:
     
   tz: Asia/Jerusalem
 deployment_rest:
+
   - container:
       versionTag: facadeopening
       imageName: yolov8
@@ -49,7 +50,6 @@ deployment_rest:
           value: cuda
           name: sr-extract-window-v3
     name: sr-extract-window-v3
-  
  
 env: azure
 logo: javascript
