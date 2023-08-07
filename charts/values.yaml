@@ -53,13 +53,12 @@ deployment_rest:
  
 env: azure
 logo: javascript
-namespace: sr-executor-azure
+namespace: sr-extractors-azure
 pullPolicy: IfNotPresent
 registry: devsracr.azurecr.io
-registryPullSecret: acr-secret
 storage:
   accessModes: ReadWriteMany
-  name: sr-extractor-data
+  name: sr-extractors-data
   secretName: secret-sasrnfsdev-1
   azurestorageaccountkey: bW9jaw==
   azurestorageaccountname: bW9jaw==
