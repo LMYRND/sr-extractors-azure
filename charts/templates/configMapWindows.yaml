@@ -8,6 +8,6 @@ metadata:
   namespace: {{ $namespace }}
 data:
   {{- range .container.environments }}
-    "{{ .env }}: {{.value}}"
+    {{ .env }}: {{.value}}
   {{- end }}
 {{- end }}
